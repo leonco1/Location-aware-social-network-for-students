@@ -1,0 +1,23 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('finki.jpg') no-repeat center center ;
+    background-size: cover;
+}
+hr
+{
+    border: 2px solid black;
+
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh; /* Optional: to center vertically in the viewport */
+    margin-bottom: 100px;
+}
+.row {
+    width: 100%;
+    max-width: 600px; /* Adjust this value as needed */
+}

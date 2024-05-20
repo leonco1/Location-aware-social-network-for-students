@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Optional;
 
 @Service
@@ -23,8 +26,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public User create(String username, String password, Role role) {
-        String encodedPassword = passwordEncoder.encode(password);
+    public User create(String username, Role role) {
         User user = new User(username, Role.ROLE_USER);
         return userRepository.save(user);
     }
@@ -34,9 +36,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+
+
     @Override
-    public User create(String username, Role role) {
-        return null;
+    public Optional<String> getWifi() throws IOException {
+        Process process = Runtime.getRuntime().
+                exec("netsh wlan show interfaces");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        return reader.lines().filter(i->i.trim().startsWith("SSID")).map(i->i.split(":")[1].trim()).findFirst();
+    }
+
+    @Override
+    public void SendMessage() {
+
     }
 
     @Override

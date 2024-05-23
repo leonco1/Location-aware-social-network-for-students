@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 public interface UserService {
-    User register(String username);
     Optional<User> findByUsername(String username);
-    User create(String username, Role role);
+    User createAdmin(String username, String password, Role role);
+    User createUser(String username);
     Optional<String> getWifi() throws IOException;
     void SendMessage();
 

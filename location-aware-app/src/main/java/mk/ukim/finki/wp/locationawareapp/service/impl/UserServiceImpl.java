@@ -14,30 +14,31 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public User create(String username, Role role) {
-        User user = new User(username, Role.ROLE_USER);
+    public User createAdmin(String username, String password, Role role) {
+        User user = new User(username,password, Role.ROLE_USER);
         return userRepository.save(user);
     }
 
     @Override
+    public User createUser(String username) {
+        User user =new User(username);
+        return userRepository.save(user);
+    }
+    @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
-
-
     @Override
     public Optional<String> getWifi() throws IOException {
         Process process = Runtime.getRuntime().
@@ -52,14 +53,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(String username) {
-        if(findByUsername(username).isPresent())
-            throw new UsernameAlreadyExistsException();
-        return this.userRepository.save(new User(username,Role.ROLE_USER));
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        User user = userRepository.findByUsername(username).orElseThrow(UsernameAlreadyExistsException::new);
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                Collections.singletonList(user.getRole())
+        );
     }
 }

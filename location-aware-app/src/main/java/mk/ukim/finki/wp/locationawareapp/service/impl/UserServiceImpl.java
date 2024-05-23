@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.locationawareapp.service.impl;
 
 import mk.ukim.finki.wp.locationawareapp.model.Role;
 import mk.ukim.finki.wp.locationawareapp.model.User;
+import mk.ukim.finki.wp.locationawareapp.model.exceptions.NoWifiFoundException;
 import mk.ukim.finki.wp.locationawareapp.model.exceptions.UsernameAlreadyExistsException;
 import mk.ukim.finki.wp.locationawareapp.repository.UserRepository;
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -26,7 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     @Override
     public User createAdmin(String username, String password, Role role) {
-        User user = new User(username,password, Role.ROLE_USER);
+        User user = new User(username,password, role);
         return userRepository.save(user);
     }
 
@@ -42,13 +46,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Optional<String> getWifi() throws IOException {
         Process process = Runtime.getRuntime().
-                exec("netsh wlan show interfaces");
+                exec("ipconfig");
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        return reader.lines().filter(i->i.trim().startsWith("SSID")).map(i->i.split(":")[1].trim()).findFirst();
+        return reader.lines().filter(i->i.trim().startsWith("IPv4 Address")).map(i->i.split(":")[1].trim()).findFirst();
     }
 
     @Override
-    public void SendMessage() {
+    public void SendMessage() throws IOException {
+        String wifi=this.getWifi().orElseThrow(NoWifiFoundException::new);
+        System.out.println(wifi);
+        MulticastSocket multicastSocket=new MulticastSocket();
+        InetAddress inetAddress=InetAddress.getByName(wifi);
+        multicastSocket.setTimeToLive(1);
+        String message="Dokolku sakate da prisustvuvate na grupniot chat";
+        byte[] buffer = message.getBytes();
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, inetAddress, 4446);
+        multicastSocket.send(packet);
+
+        multicastSocket.close();
 
     }
 

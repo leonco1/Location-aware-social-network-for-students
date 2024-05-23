@@ -11,7 +11,7 @@ public interface UserService {
     User createAdmin(String username, String password, Role role);
     User createUser(String username);
     Optional<String> getWifi() throws IOException;
-    void SendMessage();
+    void SendMessage() throws IOException;
 
 
 

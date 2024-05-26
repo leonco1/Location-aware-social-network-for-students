@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.locationawareapp.web.controller;
 
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
+import mk.ukim.finki.wp.locationawareapp.service.WifiService;
 import org.springframework.ui.Model;
 
 import org.springframework.stereotype.Controller;
@@ -14,9 +15,11 @@ import java.io.IOException;
 @RequestMapping({"/admin","/"})
 public class AdminController {
     private final UserService userService;
+    private final WifiService wifiService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService,WifiService wifiService) {
         this.userService = userService;
+        this.wifiService=wifiService;
     }
 
     @GetMapping
@@ -26,7 +29,7 @@ public class AdminController {
     }
     @GetMapping("/send_signals")
     public String SendRequests(Model model) throws IOException {
-        userService.SendMessage();
+        wifiService.SendMessage();
         return "index-chat-page";
     }
 }

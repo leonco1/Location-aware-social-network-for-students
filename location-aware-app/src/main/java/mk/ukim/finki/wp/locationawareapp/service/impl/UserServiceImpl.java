@@ -9,15 +9,11 @@ import mk.ukim.finki.wp.locationawareapp.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -42,29 +38,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
-    }
-    @Override
-    public Optional<String> getWifi() throws IOException {
-        Process process = Runtime.getRuntime().
-                exec("ipconfig");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        return reader.lines().filter(i->i.trim().startsWith("IPv4 Address")).map(i->i.split(":")[1].trim()).findFirst();
-    }
-
-    @Override
-    public void SendMessage() throws IOException {
-        String wifi=this.getWifi().orElseThrow(NoWifiFoundException::new);
-        System.out.println(wifi);
-        MulticastSocket multicastSocket=new MulticastSocket();
-        InetAddress inetAddress=InetAddress.getByName(wifi);
-        multicastSocket.setTimeToLive(1);
-        String message="Dokolku sakate da prisustvuvate na grupniot chat";
-        byte[] buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, inetAddress, 4446);
-        multicastSocket.send(packet);
-
-        multicastSocket.close();
-
     }
 
     @Override

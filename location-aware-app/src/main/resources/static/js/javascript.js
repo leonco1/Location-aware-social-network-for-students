@@ -1,13 +1,12 @@
-// 'use strict';
-//
-// var usernamePage = document.querySelector('#username-page');
-// var chatPage = document.querySelector('#chat-page');
-// var usernameForm = document.querySelector('#usernameForm');
-// var messageForm = document.querySelector('#messageForm');
-// var messageInput = document.querySelector('#message');
-// var messageArea = document.querySelector('#messageArea');
-// var connectingElement = document.querySelector('.connecting');
-//
+
+let usernamePage = document.querySelector('#username-page');
+let  chatPage = document.querySelector('#chat-page');
+let  usernameForm = document.querySelector('#usernameForm');
+let  messageForm = document.querySelector('#messageForm');
+let  messageInput = document.querySelector('#message');
+let messageArea = document.querySelector('#messageArea');
+let  connectingElement = document.querySelector('.connecting');
+
 // var stompClient = null;
 // var username = null;
 //

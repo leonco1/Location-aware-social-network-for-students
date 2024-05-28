@@ -1,8 +1,7 @@
 package mk.ukim.finki.wp.locationawareapp.service.impl;
 
-import mk.ukim.finki.wp.locationawareapp.model.Role;
+import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
 import mk.ukim.finki.wp.locationawareapp.model.User;
-import mk.ukim.finki.wp.locationawareapp.model.exceptions.NoWifiFoundException;
 import mk.ukim.finki.wp.locationawareapp.model.exceptions.UsernameAlreadyExistsException;
 import mk.ukim.finki.wp.locationawareapp.repository.UserRepository;
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
@@ -11,9 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.Optional;
 

@@ -1,7 +1,7 @@
 package mk.ukim.finki.wp.locationawareapp.config;
 
 import jakarta.annotation.PostConstruct;
-import mk.ukim.finki.wp.locationawareapp.model.Role;
+import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
 import mk.ukim.finki.wp.locationawareapp.model.User;
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;

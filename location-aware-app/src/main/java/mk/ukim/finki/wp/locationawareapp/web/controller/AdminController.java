@@ -25,11 +25,11 @@ public class AdminController {
     @GetMapping
     public String getHomePage(Model model)
     {
-        return "admin-page";
+        return "../templates/admin-page";
     }
     @GetMapping("/send_signals")
     public String SendRequests(Model model) throws IOException {
         wifiService.SendMessage();
-        return "index-chat-page";
+        return "../templates/index-chat-page";
     }
 }

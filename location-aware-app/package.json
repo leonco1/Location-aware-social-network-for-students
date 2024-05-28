@@ -1,0 +1,18 @@
+{
+  "name": "location-aware-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leonco1/Location-aware-social-network-for-students.git"
+  },
+  "private": true,
+  "dependencies": {
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3"
+  }
+}

@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.locationawareapp.web.controller;
 
+import jakarta.servlet.http.HttpSession;
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
 import mk.ukim.finki.wp.locationawareapp.service.WifiService;
 import org.springframework.ui.Model;
@@ -12,24 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.IOException;
 
 @Controller
-@RequestMapping({"/admin","/"})
+@RequestMapping({"/admin"})
 public class AdminController {
-    private final UserService userService;
-    private final WifiService wifiService;
 
-    public AdminController(UserService userService,WifiService wifiService) {
-        this.userService = userService;
-        this.wifiService=wifiService;
-    }
 
     @GetMapping
-    public String getHomePage(Model model)
+    public String getAdminPage(Model model)
     {
-        return "../templates/admin-page";
+        return "admin-page";
     }
-    @GetMapping("/send_signals")
-    public String SendRequests(Model model) throws IOException {
-        wifiService.SendMessage();
-        return "../templates/index-chat-page";
+    @PostMapping("/send_signals")
+    public String SendRequests(HttpSession httpSession) throws IOException {
+        httpSession.setAttribute("revealMainPage",true);
+        return "redirect:/";
     }
 }

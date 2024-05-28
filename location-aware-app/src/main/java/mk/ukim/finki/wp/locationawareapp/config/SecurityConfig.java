@@ -41,7 +41,7 @@ public class SecurityConfig{
                 .formLogin((form) -> form
                         .permitAll()
                         .failureUrl("/login?error=BadCredentials")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/admin", true)
                 )
                 .logout((logout) -> logout
                         .logoutUrl("/logout")

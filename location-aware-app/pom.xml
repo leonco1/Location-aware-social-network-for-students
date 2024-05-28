@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
-            <version>5.3.22</version> <!-- Use the latest version compatible with your project -->
+            <version>6.1.8</version> <!-- Use the latest version compatible with your project -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

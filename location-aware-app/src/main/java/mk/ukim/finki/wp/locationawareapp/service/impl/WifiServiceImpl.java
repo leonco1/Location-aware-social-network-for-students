@@ -24,7 +24,6 @@ public class WifiServiceImpl implements WifiService {
     private Optional<String> TrimIpAddress(Optional<String> ipaddress)
     {
         String ip_address=ipaddress.orElseThrow(NoWifiFoundException::new);
-        System.out.println(ip_address);
         String[]ip_parts=ip_address.split("\\.");
         StringBuilder new_ip=new StringBuilder();
         for(int i=0;i<3;i++)

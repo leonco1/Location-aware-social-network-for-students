@@ -16,7 +16,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class WebSocketEventListener {
     private final SimpMessageSendingOperations messageSendingOperations;
 
-    //TODO-- IMPLEMENT LATER
     @EventListener
     public void HandleWebSocketDisconnectListener(SessionDisconnectEvent event)
     {
@@ -26,7 +25,8 @@ public class WebSocketEventListener {
         if(username!=null)
         {
             log.info("User disconnected: {}",username);
-            ChatMessage chatMessage=ChatMessage.builder().messageType(MessageType.LEAVE).
+            var chatMessage=ChatMessage.builder().
+                    messageType(MessageType.LEAVE).
                     sender(username).build();
             messageSendingOperations.convertAndSend("/topic/public",chatMessage);
         }

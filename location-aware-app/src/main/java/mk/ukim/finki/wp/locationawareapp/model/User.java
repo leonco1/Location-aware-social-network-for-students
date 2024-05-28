@@ -2,9 +2,12 @@ package mk.ukim.finki.wp.locationawareapp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.web.WebProperties;
+import lombok.Getter;
+import lombok.Setter;
+import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
 
+@Setter
+@Getter
 @Data
 @Entity
 @Table(name = "chat_user")
@@ -32,30 +35,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
 
 }

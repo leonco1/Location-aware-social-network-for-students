@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.locationawareapp.model;
+package mk.ukim.finki.wp.locationawareapp.model.Enum;
 
 import org.springframework.security.core.GrantedAuthority;
 

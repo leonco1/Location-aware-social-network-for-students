@@ -1,10 +1,8 @@
 package mk.ukim.finki.wp.locationawareapp.service;
 
-import mk.ukim.finki.wp.locationawareapp.model.Role;
+import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
 import mk.ukim.finki.wp.locationawareapp.model.User;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public interface UserService {

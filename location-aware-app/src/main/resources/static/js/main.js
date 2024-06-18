@@ -7,7 +7,7 @@ let  messageForm = document.querySelector('#messageForm');
 let  messageInput = document.querySelector('#message');
 let messageArea = document.querySelector('#messageArea');
 let  connectingElement = document.querySelector('.connecting');
-
+let activeUsersList = document.getElementById('activeUsersList');
 let stompClient = null;
 let username = null;
 
@@ -34,6 +34,8 @@ function connect(event) {
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
+
+    stompClient.subscribe('/topic/activeUsers', onActiveUsersReceived);
 
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
@@ -103,7 +105,15 @@ function onMessageReceived(payload) {
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-
+    function onActiveUsersReceived(payload) {
+        let users = JSON.parse(payload.body);
+        activeUsersList.innerHTML = '';
+        users.forEach(user => {
+            let li = document.createElement('li');
+            li.textContent = user;
+            activeUsersList.appendChild(li);
+        });
+    }
 
 function getAvatarColor(messageSender) {
     let hash = 0;
@@ -116,4 +126,9 @@ function getAvatarColor(messageSender) {
 
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
+    // Call fetchActiveUsers initially
+    fetchActiveUsers();
+
+    // Set interval to fetch active users every 5 seconds
+    setInterval(fetchActiveUsers, 5000);
 })

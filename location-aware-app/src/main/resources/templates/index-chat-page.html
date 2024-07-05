@@ -73,25 +73,5 @@
         </form>
     </div>
 </div>
-
-<script>
-    function fetchActiveUsers() {
-        fetch('/api/connected-users')
-            .then(response => response.json())
-            .then(users => {
-                const userList = document.getElementById('activeUsersList');
-                userList.innerHTML = '';
-                users.forEach(user => {
-                    const li = document.createElement('li');
-                    li.textContent = user;
-                    userList.appendChild(li);
-                });
-            })
-            .catch(error => console.error('Error fetching active users:', error));
-    }
-
-    setInterval(fetchActiveUsers, 5000); // Fetch every 5 seconds
-</script>
-
 </body>
 </html>

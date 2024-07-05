@@ -77,8 +77,7 @@ public class SecurityConfig{
         public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException, ServletException {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String clientIp = httpRequest.getRemoteAddr();
-            System.out.format("%s %s",clientIp,ip_address);
-            boolean allowed = clientIp.startsWith(ip_address)||clientIp.equals("0:0:0:0:0:0:0:1");
+            boolean allowed = true;
             if (allowed) {
                 chain.doFilter(request, response);
             } else {

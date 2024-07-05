@@ -12,13 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class UserController {
-    private final UserService userService;
-    private final WifiService wifiService;
-
-    public UserController(UserService userService,WifiService wifiService) {
-        this.userService = userService;
-        this.wifiService=wifiService;
-    }
     @GetMapping
     public String getHomePage(HttpSession session, Model model)
     {

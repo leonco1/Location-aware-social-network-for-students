@@ -79,7 +79,8 @@ window.onload=function () {
         } else if (message.type === 'LEAVE') {
             messageElement.classList.add('event-message');
             message.content = message.sender + ' left!';
-        } else {
+        }
+        else {
             messageElement.classList.add('chat-message');
 
             var avatarElement = document.createElement('i');

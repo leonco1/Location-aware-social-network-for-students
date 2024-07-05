@@ -27,9 +27,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User createUser(String username,Role role) {
+    public void createUser(String username, Role role) {
         User user =new User(username,role);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
     @Override
     public Optional<User> findByUsername(String username) {

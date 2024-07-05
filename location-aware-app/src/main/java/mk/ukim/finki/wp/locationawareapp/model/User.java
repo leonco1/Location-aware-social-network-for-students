@@ -22,10 +22,10 @@ public class User {
         this.role = role;
     }
     public
-    User(String username)
+    User(String username,Role role)
     {
         this.username=username;
-        this.role=Role.ROLE_USER;
+        this.role=role;
     }
 
     @Id

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<User> findByUsername(String username);
     User createAdmin(String username, String password, Role role);
-    User createUser(String username);
+    User createUser(String username,Role role);
 
 
 }

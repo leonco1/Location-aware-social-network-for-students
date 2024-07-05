@@ -8,13 +8,16 @@ import javax.swing.text.html.Option;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.util.Optional;
 @Service
 public class WifiServiceImpl implements WifiService {
+
     @Override
     public Optional<String> getIpAddress() throws IOException {
         Process process = Runtime.getRuntime().
                 exec("ipconfig");
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         return TrimIpAddress(reader.lines().filter(i->i.trim().startsWith("Wireless LAN adapter Wi-Fi:"))
                 .flatMap(section -> reader.lines().skip(1).takeWhile(line -> !line.trim().isEmpty()))
@@ -36,6 +39,7 @@ public class WifiServiceImpl implements WifiService {
     }
     @Override
     public void SendMessage() throws IOException {
+
         String ip_address=this.getIpAddress().orElseThrow(NoWifiFoundException::new);
         String subnet_mask=this.getSubnetMask().orElseThrow(NoWifiFoundException::new);
         int subnet_length=CalculateSubnetLength(subnet_mask);

@@ -25,11 +25,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
         registry.enableSimpleBroker("/topic");
     }
-    public static void disconnectAllUsers(Set<String> sessions)
-    {
-        for(String s:sessions)
-        {
 
-        }
-    }
 }

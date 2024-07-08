@@ -8,7 +8,7 @@ window.onload=function () {
     var messageArea = document.querySelector('#messageArea');
     var activeUsers=document.querySelector('#active-users')
     var connectingElement = document.querySelector('.connecting');
-
+    var surveyButton=document.querySelector("#sendSurveyButton")
     var stompClient = null;
     var username = null;
 
@@ -36,13 +36,13 @@ window.onload=function () {
     function onConnected(options) {
         // Subscribe to the Public Topic
         stompClient.subscribe('/topic/public', onMessageReceived);
+        stompClient.subscribe()
 
         // Tell your username to the server
         stompClient.send("/app/chat.addUser",
             {},
             JSON.stringify({sender: username, type: 'JOIN'})
         )
-
         connectingElement.classList.add('hidden');
     }
 
@@ -70,7 +70,7 @@ window.onload=function () {
 
     function onMessageReceived(payload) {
         var message = JSON.parse(payload.body);
-
+        hideIfUserIsNotAdmin(message.role)
         var messageElement = document.createElement('li');
 
         if (message.type === 'JOIN') {
@@ -106,7 +106,11 @@ window.onload=function () {
         messageArea.scrollTop = messageArea.scrollHeight;
     }
 
-
+    function hideIfUserIsNotAdmin(role)
+    {
+        if(role==="ROLE_ADMIN")
+            surveyButton.style.display='block'
+    }
     function getAvatarColor(messageSender) {
         var hash = 0;
         for (var i = 0; i < messageSender.length; i++) {
@@ -134,6 +138,15 @@ window.onload=function () {
 
     setInterval(fetchActiveUsers, 5000); // Fetch every 5 seconds
 
+    function sendSurvey(options)
+    {
+        stompClient.subscribe("/topic/redirect",function (message)
+        {
+            var redirectUrl=message.body.trim()
+            console.log('Redirecting to: ' + redirectUrl);
+            window.location.href = redirectUrl;
+        })
+    }
 
     usernameForm.addEventListener('submit', connect, true)
     messageForm.addEventListener('submit', sendMessage, true)

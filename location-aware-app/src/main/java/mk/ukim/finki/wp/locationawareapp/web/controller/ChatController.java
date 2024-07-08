@@ -2,16 +2,24 @@ package mk.ukim.finki.wp.locationawareapp.web.controller;
 
 
 
+import jakarta.websocket.Session;
 import lombok.extern.slf4j.Slf4j;
 import mk.ukim.finki.wp.locationawareapp.model.ChatMessage;
 import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
+import mk.ukim.finki.wp.locationawareapp.model.User;
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
 import mk.ukim.finki.wp.locationawareapp.service.UserSessionRegistry;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -44,11 +52,26 @@ public class ChatController {
         } else {
             userService.createUser(username, Role.ROLE_USER);
         }
-
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         userSessionRegistry.addUser(headerAccessor.getSessionId(), username);
+        chatMessage.setRole(userService.findByUsername(username).get().getRole());
         log.info("User connected: {}", username);
         log.info("User role:{}",userService.findByUsername(username).get().getRole());
         return chatMessage;
     }
+
+//    @GetMapping("/api/admin-redirect")
+//    public String adminRedirect(SimpMessageHeaderAccessor headerAccessor) {
+//        String redirectUrl = "/survey";
+//        for(String user: userSessionRegistry.getAllUsers())
+//        {
+//            if(userService.findByUsername(user).get().getRole().equals(Role.ROLE_ADMIN))
+//            {
+//                messagingTemplate.convertAndSendToUser(sessionId, "/topic/redirect", message);
+//            }
+//        }
+//        userSessionRegistry.getAllSessions().forEach(sessionId -> {
+//            userSessionRegistry.sendMessageToSession(sessionId, redirectUrl);
+//        });
+//    }
 }

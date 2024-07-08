@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.locationawareapp.web.listener;
 
+import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mk.ukim.finki.wp.locationawareapp.model.ChatMessage;
@@ -33,30 +34,27 @@ public class WebSocketEventListener {
     private final SimpMessageSendingOperations messagingTemplate;
 
     private final UserSessionRegistry userSessionRegistry;
-
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) throws IOException {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-        WebSocketSession session = (WebSocketSession) headerAccessor.getSessionAttributes().get("session");
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-
             if (username != null) {
-                if((userService.findByUsername(username).get().getRole().getAuthority().equals("ROLE_ADMIN")))
-                {
+                if ((userService.findByUsername(username).get().getRole().getAuthority().equals("ROLE_ADMIN"))) {
                     var chatMessage = ChatMessage.builder()
                             .type(MessageType.LEAVE)
                             .sender(username)
-                            .content("Admin has left chat will now close")
+                            .content("Admin has left,chat will now close")
                             .build();
                     messagingTemplate.convertAndSend("/topic/public", chatMessage);
                     exitApp();
+                } else {
+                    log.info("user disconnected: {}", username);
+                    var chatMessage = ChatMessage.builder()
+                            .type(MessageType.LEAVE)
+                            .sender(username)
+                            .build();
+                    messagingTemplate.convertAndSend("/topic/public", chatMessage);
                 }
-                log.info("user disconnected: {}", username);
-                var chatMessage = ChatMessage.builder()
-                        .type(MessageType.LEAVE)
-                        .sender(username)
-                        .build();
-                messagingTemplate.convertAndSend("/topic/public", chatMessage);
             }
         }
 

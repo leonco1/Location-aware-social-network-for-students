@@ -24,21 +24,29 @@ public class SurveyController {
         this.compileSurveyResults = compileSurveyResults;
         this.userSessionRegistry = userSessionRegistry;
     }
+    @GetMapping("/reveal_button")
+    public String revealButton(Model model)
+    {
+        model.addAttribute("hidden_survey",true);
+        return "index-chat-page";
+    }
+
     @GetMapping()
-    public String getResults( Model model)
+    public String getResults(Model model)
     {
         Map<String,Long>surveyMap=compileSurveyResults.CompileSurveys();
-
         model.addAttribute("survey_results",surveyMap);
         return "surveyResults";
     }
+
+
     @PostMapping()
     public String submitSurvey(@RequestParam String exampleForm) throws IOException {
         surveyService.createSurvey(exampleForm);
         if(userSessionRegistry.getSize()==surveyService.getSurveys().size()&&userSessionRegistry.getSize()>0)
         {
 
-            return "redirect:/survey";
+            return "redirect:/survey/reveal_button";
         }
         return "index-chat-page";
     }

@@ -23,9 +23,6 @@ public class UserSessionRegistry {
         userSessions.put(sessionId, username);
     }
 
-    public void removeUser(String sessionId) {
-        userSessions.remove(sessionId);
-    }
     public Set<String>getAllSessions()
     {
         return userSessions.keySet();

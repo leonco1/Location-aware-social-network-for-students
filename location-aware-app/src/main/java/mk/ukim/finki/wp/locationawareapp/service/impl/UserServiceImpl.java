@@ -1,7 +1,9 @@
 package mk.ukim.finki.wp.locationawareapp.service.impl;
 
+import jakarta.transaction.Transactional;
 import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
 import mk.ukim.finki.wp.locationawareapp.model.User;
+import mk.ukim.finki.wp.locationawareapp.model.exceptions.NoUserNameFoundException;
 import mk.ukim.finki.wp.locationawareapp.model.exceptions.UsernameAlreadyExistsException;
 import mk.ukim.finki.wp.locationawareapp.repository.UserRepository;
 import mk.ukim.finki.wp.locationawareapp.service.UserService;
@@ -31,6 +33,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user =new User(username,role);
         userRepository.save(user);
     }
+
+    @Override
+    @Transactional
+    public User removeUser(String username) {
+        User u=userRepository.findByUsername(username).orElseThrow(NoUserNameFoundException::new);
+        userRepository.deleteByUsername(username);
+        return u;
+    }
+
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

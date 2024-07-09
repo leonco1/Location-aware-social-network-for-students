@@ -39,22 +39,12 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) headerAccessor.getSessionAttributes().get("username");
             if (username != null) {
-                if ((userService.findByUsername(username).get().getRole().getAuthority().equals("ROLE_ADMIN"))) {
-                    var chatMessage = ChatMessage.builder()
-                            .type(MessageType.LEAVE)
-                            .sender(username)
-                            .content("Admin has left,chat will now close")
-                            .build();
-                    messagingTemplate.convertAndSend("/topic/public", chatMessage);
-                    //exitApp();
-                } else {
                     log.info("user disconnected: {}", username);
                     var chatMessage = ChatMessage.builder()
                             .type(MessageType.LEAVE)
                             .sender(username)
                             .build();
                     messagingTemplate.convertAndSend("/topic/public", chatMessage);
-                }
             }
         }
 

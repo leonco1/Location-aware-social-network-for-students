@@ -12,7 +12,8 @@ window.onload=function () {
     var stompClient = null;
     var username = null;
     var survey=document.querySelector("#survey")
-
+    var role;
+    var exit_button=document.querySelector("#exitButton")
     var colors = [
         '#2196F3', '#32c787', '#00BCD4', '#ff5652',
         '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
@@ -77,8 +78,9 @@ window.onload=function () {
     function onMessageReceived(payload) {
         var message = JSON.parse(payload.body);
         hideIfUserIsNotAdmin(message.role)
+        username=message.sender
+        role=message.role
         var messageElement = document.createElement('li');
-
         if (message.type === 'JOIN') {
             messageElement.classList.add('event-message');
             message.content = message.sender + ' joined!';
@@ -151,6 +153,39 @@ window.onload=function () {
     surveyButton.addEventListener('click',function ()
     {
         stompClient.send("/app/change", {}, "Button clicked!");
-
     })
+    exit_button.addEventListener("submit",function (event)
+        {
+            event.preventDefault()
+            var url='/exit'
+            console.log(role,username)
+            var form_data=new FormData();
+            form_data.append("role",role)
+            form_data.append("username",username)
+            var options = {
+                method: 'POST',
+                body: form_data
+            };
+            fetch(url, options)
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    if(response.ok)
+                    {
+                        stompClient.disconnect()
+                        window.location.reload()
+                    }
+                    return response.ok // assuming response is JSON
+                })
+                .then(function(data) {
+                    console.log('POST request succeeded with JSON response', data);
+                })
+                .catch(function(error) {
+                    console.error('Error making POST request:', error);
+                });
+
+        }
+
+    )
 }

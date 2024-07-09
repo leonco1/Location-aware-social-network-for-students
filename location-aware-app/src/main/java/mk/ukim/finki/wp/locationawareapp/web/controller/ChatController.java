@@ -27,7 +27,7 @@ public class ChatController {
     private final UserSessionRegistry userSessionRegistry;
     private final UserService userService;
 
-    public ChatController(UserSessionRegistry userSessionRegistry, UserService userService) {
+    public ChatController (UserSessionRegistry userSessionRegistry, UserService userService) {
         this.userSessionRegistry = userSessionRegistry;
         this.userService = userService;
     }
@@ -48,9 +48,18 @@ public class ChatController {
     public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         String username=chatMessage.getSender();
         if (userSessionRegistry.getAllUsers().isEmpty()) {
+
             userService.createUser(username, Role.ROLE_ADMIN);
         } else {
-            userService.createUser(username, Role.ROLE_USER);
+            if(userService.findByUsername(username).isPresent())
+            {
+                if(userService.findByUsername(username).get().getRole().equals(Role.ROLE_ADMIN))
+                    userService.createUser(username,Role.ROLE_ADMIN);
+                else userService.createUser(username,Role.ROLE_USER);
+
+            }
+            else
+                userService.createUser(username, Role.ROLE_USER);
         }
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         userSessionRegistry.addUser(headerAccessor.getSessionId(), username);
@@ -59,19 +68,13 @@ public class ChatController {
         log.info("User role:{}",userService.findByUsername(username).get().getRole());
         return chatMessage;
     }
+    @MessageMapping("/change")
+    @SendTo("/topic/changes")
+    public String broadcastChange(String message)
+    {
+        return message;
+    }
 
-//    @GetMapping("/api/admin-redirect")
-//    public String adminRedirect(SimpMessageHeaderAccessor headerAccessor) {
-//        String redirectUrl = "/survey";
-//        for(String user: userSessionRegistry.getAllUsers())
-//        {
-//            if(userService.findByUsername(user).get().getRole().equals(Role.ROLE_ADMIN))
-//            {
-//                messagingTemplate.convertAndSendToUser(sessionId, "/topic/redirect", message);
-//            }
-//        }
-//        userSessionRegistry.getAllSessions().forEach(sessionId -> {
-//            userSessionRegistry.sendMessageToSession(sessionId, redirectUrl);
-//        });
-//    }
+
+
 }

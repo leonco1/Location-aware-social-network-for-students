@@ -11,6 +11,7 @@ window.onload=function () {
     var surveyButton=document.querySelector("#sendSurveyButton")
     var stompClient = null;
     var username = null;
+    var survey=document.querySelector("#survey")
 
     var colors = [
         '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -37,6 +38,11 @@ window.onload=function () {
         // Subscribe to the Public Topic
         stompClient.subscribe('/topic/public', onMessageReceived);
         stompClient.subscribe()
+        stompClient.subscribe('/topic/changes',function (message)
+        {
+                showChange(message.body)
+        })
+
 
         // Tell your username to the server
         stompClient.send("/app/chat.addUser",
@@ -135,19 +141,16 @@ window.onload=function () {
             })
             .catch(error => console.error('Error fetching active users:', error));
     }
-
-    setInterval(fetchActiveUsers, 5000); // Fetch every 5 seconds
-
-    function sendSurvey(options)
+    function showChange(message)
     {
-        stompClient.subscribe("/topic/redirect",function (message)
-        {
-            var redirectUrl=message.body.trim()
-            console.log('Redirecting to: ' + redirectUrl);
-            window.location.href = redirectUrl;
-        })
+        survey.style.display="block"
     }
-
+    setInterval(fetchActiveUsers, 5000); // Fetch every 5 seconds
     usernameForm.addEventListener('submit', connect, true)
     messageForm.addEventListener('submit', sendMessage, true)
+    surveyButton.addEventListener('click',function ()
+    {
+        stompClient.send("/app/change", {}, "Button clicked!");
+
+    })
 }

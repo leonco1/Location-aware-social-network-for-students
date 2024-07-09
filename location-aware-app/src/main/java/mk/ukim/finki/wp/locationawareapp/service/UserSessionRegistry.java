@@ -12,15 +12,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserSessionRegistry {
-    private final SimpMessagingTemplate messagingTemplate;
 
     private final ConcurrentHashMap<String, String> userSessions = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, WebSocketSession>webSocketSessions=new ConcurrentHashMap<>();
 
-    public UserSessionRegistry(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+    public Integer getSize()
+    {
+        return userSessions.size();
     }
-
     public void addUser(String sessionId, String username) {
         userSessions.put(sessionId, username);
     }
@@ -34,8 +32,6 @@ public class UserSessionRegistry {
     }
     public Set<String> getAllUsers() {
         return new HashSet<>(userSessions.values());}
-    public void sendMessageToSession(String sessionId, String message) {
-        messagingTemplate.convertAndSendToUser(sessionId, "/topic/redirect", message);
-    }
+
 
 }

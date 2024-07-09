@@ -9,7 +9,11 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
+            integrity="sha512-Tn2m0TIpgVyTzzvmxLNuqbSJH3JP8jm+Cy3hvHrW7ndTDcJ1w5mBiksqDBb8GpE2ksktFvDB/ykZ0mDpsZj20w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="/js/main.js"></script>
@@ -31,6 +35,15 @@
 
         .chat-container {
             margin-left: 220px; /* Adjust the margin to accommodate the user list */
+        }
+
+        .card-container {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 300px; /* Adjust width as needed */
+            margin: 10px;
         }
     </style>
 
@@ -62,9 +75,7 @@
         <div class="connecting">
             Connecting...
         </div>
-        <ul id="messageArea">
-
-        </ul>
+        <ul id="messageArea"></ul>
         <form id="messageForm" name="messageForm">
             <div class="form-group">
                 <div class="input-group clearfix">
@@ -73,10 +84,51 @@
                 </div>
             </div>
         </form>
-
-        <form th:method="GET" th:action="@{/api/admin-redirect}">
             <button id="sendSurveyButton" style="display: none" class="btn btn-info">Send Survey</button>
-        </form>
+        <div  style="display: none" id="survey" class="card-container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <p>
+                            <strong>Your opinion matters</strong>
+                        </p>
+                        <p>
+                            How satisfied are you with our website?<br>
+                            <strong>Give us your feedback.</strong>
+                        </p>
+                    </div>
+                    <hr />
+                    <form class="px-4" th:method="POST" th:action="@{/survey}">
+                        <p class="text-center"><strong>Your rating:</strong></p>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="exampleForm" id="radio2Example1" value="Very good:5" />
+                            <label class="form-check-label" for="radio2Example1">Very good</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="exampleForm" id="radio2Example2" value="Good:4" />
+                            <label class="form-check-label" for="radio2Example2">Good</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="exampleForm" id="radio2Example3" value="Mediocre:3" />
+                            <label class="form-check-label" for="radio2Example3">Mediocre</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="exampleForm" id="radio2Example4" value="Bad:2" />
+                            <label class="form-check-label" for="radio2Example4">Bad</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="exampleForm" id="radio2Example5" value="Very bad:1" />
+                            <label class="form-check-label" for="radio2Example5">Very bad</label>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button id="surveyButton" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
 
     </div>
 </div>

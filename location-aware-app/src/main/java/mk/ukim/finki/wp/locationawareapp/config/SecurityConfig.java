@@ -25,6 +25,7 @@
     import org.springframework.web.filter.GenericFilterBean;
 
     import java.io.IOException;
+    import java.util.List;
 
     @Configuration
     @EnableWebSecurity
@@ -32,14 +33,14 @@
         private  final PasswordEncoder passwordEncoder;
         private final UserDetailsService userDetailsService;
         private final WifiService wifiService;
-        private final String ip_address;
+        private final List<String> ip_address;
 
 
         public SecurityConfig(UserDetailsService userDetailsService,PasswordEncoder passwordEncoder,WifiService wifiService) throws IOException {
             this.userDetailsService = userDetailsService;
            this.passwordEncoder=passwordEncoder;
            this.wifiService=wifiService;
-           this.ip_address=wifiService.getIpAddress().orElseThrow(NoWifiFoundException::new);
+           this.ip_address=wifiService.getIpAddress();
         }
 
 
@@ -77,7 +78,7 @@
             public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException, ServletException {
                 HttpServletRequest httpRequest = (HttpServletRequest) request;
                 String clientIp = httpRequest.getRemoteAddr();
-                boolean allowed = true;
+                boolean allowed = (clientIp.equalsIgnoreCase("0:0:0:0:0:0:0:1")||ip_address.contains(clientIp));
                 if (allowed) {
                     chain.doFilter(request, response);
                 } else {

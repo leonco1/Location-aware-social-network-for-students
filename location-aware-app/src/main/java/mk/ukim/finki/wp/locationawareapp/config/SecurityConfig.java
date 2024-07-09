@@ -78,13 +78,14 @@
             public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException, ServletException {
                 HttpServletRequest httpRequest = (HttpServletRequest) request;
                 String clientIp = httpRequest.getRemoteAddr();
-                boolean allowed = (clientIp.equalsIgnoreCase("0:0:0:0:0:0:0:1")||ip_address.contains(clientIp));
+                boolean allowed = (clientIp.equalsIgnoreCase("0:0:0:0:0:0:0:1")||ip_address.contains(clientIp)||clientIp.equalsIgnoreCase("127.0.0.1"));
                 if (allowed) {
                     chain.doFilter(request, response);
                 } else {
                     HttpServletResponse httpResponse = (HttpServletResponse) response;
                     httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    httpResponse.getWriter().write("Access Forbidden");
+                    String s=String.format("Access forbidden because ip is %s",clientIp);
+                    httpResponse.getWriter().write(s);
                 }
             }
         }

@@ -13,6 +13,7 @@ window.onload=function () {
     var username = null;
     var survey=document.querySelector("#survey")
     var role;
+    let users_array = [];
     var exit_button=document.querySelector("#exitButton")
     var colors = [
         '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -78,7 +79,6 @@ window.onload=function () {
     function onMessageReceived(payload) {
         var message = JSON.parse(payload.body);
         hideIfUserIsNotAdmin(message.role)
-        username=message.sender
         role=message.role
         var messageElement = document.createElement('li');
         if (message.type === 'JOIN') {
@@ -133,11 +133,12 @@ window.onload=function () {
         fetch('/api/connected-users')
             .then(response => response.json())
             .then(users => {
+                users_array=users
                 const userList = document.getElementById('activeUsersList');
                 userList.innerHTML = '';
-                users.forEach(user => {
+                users.slice(1).forEach(user => {
                     const li = document.createElement('li');
-                    li.textContent = user;
+                    li.textContent = user.username;
                     userList.appendChild(li);
                 });
             })
@@ -147,7 +148,7 @@ window.onload=function () {
     {
         survey.style.display="block"
     }
-    setInterval(fetchActiveUsers, 5000); // Fetch every 5 seconds
+    setInterval(fetchActiveUsers, 3000); // Fetch every 5 seconds
     usernameForm.addEventListener('submit', connect, true)
     messageForm.addEventListener('submit', sendMessage, true)
     surveyButton.addEventListener('click',function ()
@@ -158,7 +159,7 @@ window.onload=function () {
         {
             event.preventDefault()
             var url='/exit'
-            console.log(role,username)
+            role=users_array.find(user=>user.username===username).role
             var form_data=new FormData();
             form_data.append("role",role)
             form_data.append("username",username)

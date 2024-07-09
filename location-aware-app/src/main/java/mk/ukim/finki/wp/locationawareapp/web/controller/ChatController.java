@@ -47,8 +47,7 @@ public class ChatController {
     @SendTo("/topic/public")
     public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         String username=chatMessage.getSender();
-        if (userSessionRegistry.getAllUsers().isEmpty()) {
-
+        if (userSessionRegistry.getAllUsers().size()==1) {
             userService.createUser(username, Role.ROLE_ADMIN);
         } else {
             if(userService.findByUsername(username).isPresent())

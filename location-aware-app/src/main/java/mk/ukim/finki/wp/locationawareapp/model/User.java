@@ -36,5 +36,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @Override
+    public String toString() {
+        return username;
+    }
 }

@@ -25,27 +25,81 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <style>
-        .active-users {
-            width: 200px;
-            background-color: #f2f2f2;
+        body, html {
             height: 100%;
-            float: left;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: none;
+            background-color: #f2f2f2;
+        }
+        #chat-page {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            background-color: #f2f2f2;
+        }
+        .active-users {
+            width: 25%;
+            background-color: #f2f2f2;
             padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
         }
-
         .chat-container {
-            margin-left: 220px; /* Adjust the margin to accommodate the user list */
+            width: 75%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background-color: #fff; /* Add background color to cover the image */
         }
-
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .connecting {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .message-form {
+            display: flex;
+        }
+        .message-form input {
+            flex: 1;
+        }
+        .message-form button {
+            margin-left: 10px;
+        }
         .card-container {
-            position: fixed;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            width: 300px; /* Adjust width as needed */
-            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 20px;
         }
-
+        #survey {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
     </style>
 </head>
 <body>

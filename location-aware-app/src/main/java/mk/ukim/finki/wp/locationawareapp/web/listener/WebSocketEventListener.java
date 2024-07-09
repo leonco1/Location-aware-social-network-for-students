@@ -46,7 +46,7 @@ public class WebSocketEventListener {
                             .content("Admin has left,chat will now close")
                             .build();
                     messagingTemplate.convertAndSend("/topic/public", chatMessage);
-                    exitApp();
+                    //exitApp();
                 } else {
                     log.info("user disconnected: {}", username);
                     var chatMessage = ChatMessage.builder()

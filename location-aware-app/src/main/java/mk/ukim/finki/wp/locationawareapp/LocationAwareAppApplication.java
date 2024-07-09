@@ -6,12 +6,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.swing.*;
 
 @SpringBootApplication
+@EnableScheduling
+
 public class LocationAwareAppApplication {
 	private static ApplicationContext context;
 

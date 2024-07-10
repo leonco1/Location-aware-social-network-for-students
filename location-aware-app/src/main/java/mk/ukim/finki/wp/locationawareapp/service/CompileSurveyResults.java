@@ -7,5 +7,4 @@ import java.util.Map;
 public interface CompileSurveyResults {
 
    public Map<String, Long> CompileSurveys();
-  // public void sendGetRequest() throws IOException;
 }

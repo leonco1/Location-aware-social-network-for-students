@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
-    private SurveyRepository surveyRepository;
+    private final SurveyRepository surveyRepository;
 
     public SurveyServiceImpl(SurveyRepository surveyRepository) {
         this.surveyRepository = surveyRepository;
@@ -29,6 +29,5 @@ public class SurveyServiceImpl implements SurveyService {
     public List<Survey> getSurveys() {
         return surveyRepository.findAll();
     }
-
 
 }

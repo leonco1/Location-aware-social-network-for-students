@@ -136,7 +136,7 @@ window.onload=function () {
                 users_array=users
                 const userList = document.getElementById('activeUsersList');
                 userList.innerHTML = '';
-                users.slice(1).forEach(user => {
+                users.forEach(user => {
                     const li = document.createElement('li');
                     li.textContent = user.username;
                     userList.appendChild(li);

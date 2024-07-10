@@ -44,7 +44,7 @@ public class UserController {
             return "index-chat-page";
         } else if (role.equals(Role.ROLE_ADMIN.getAuthority())) {
             userService.removeUser(username);
-            exitApp();
+                exitApp();
         }
         return "index-chat-page";
     }

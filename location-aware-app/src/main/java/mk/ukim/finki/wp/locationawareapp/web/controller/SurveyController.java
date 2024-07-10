@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.locationawareapp.web.controller;
 
 import mk.ukim.finki.wp.locationawareapp.service.CompileSurveyResults;
 import mk.ukim.finki.wp.locationawareapp.service.SurveyService;
+import mk.ukim.finki.wp.locationawareapp.service.UserService;
 import mk.ukim.finki.wp.locationawareapp.service.UserSessionRegistry;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,12 +18,13 @@ import java.util.Map;
 @RequestMapping("/survey")
 public class SurveyController {
     private final SurveyService surveyService;
-    private CompileSurveyResults compileSurveyResults;
-    private UserSessionRegistry userSessionRegistry;
-    public SurveyController(SurveyService surveyService, CompileSurveyResults compileSurveyResults, UserSessionRegistry userSessionRegistry) {
+    private final CompileSurveyResults compileSurveyResults;
+    private final UserService userService;
+
+    public SurveyController(SurveyService surveyService, CompileSurveyResults compileSurveyResults, UserService userService) {
         this.surveyService = surveyService;
         this.compileSurveyResults = compileSurveyResults;
-        this.userSessionRegistry = userSessionRegistry;
+        this.userService = userService;
     }
     @GetMapping("/reveal_button")
     public String revealButton(Model model)
@@ -43,7 +45,9 @@ public class SurveyController {
     @PostMapping()
     public String submitSurvey(@RequestParam String exampleForm) throws IOException {
         surveyService.createSurvey(exampleForm);
-        if(userSessionRegistry.getSize()==surveyService.getSurveys().size()&&userSessionRegistry.getSize()>0)
+       int size_user=userService.findAll().size();
+       int survey_size=surveyService.getSurveys().size();
+        if(size_user==survey_size&&size_user>0)
         {
 
             return "redirect:/survey/reveal_button";

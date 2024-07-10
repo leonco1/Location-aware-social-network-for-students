@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.locationawareapp.service;
 import mk.ukim.finki.wp.locationawareapp.model.Enum.Role;
 import mk.ukim.finki.wp.locationawareapp.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -10,5 +11,5 @@ public interface UserService {
     User createAdmin(String username, String password, Role role);
     void createUser(String username, Role role);
     User removeUser(String username);
-
+    List<User> findAll();
 }

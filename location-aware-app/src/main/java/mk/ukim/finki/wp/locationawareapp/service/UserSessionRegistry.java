@@ -30,11 +30,6 @@ public class UserSessionRegistry {
     public void addUser(String sessionId, String username) {
         userSessions.put(sessionId, username);
     }
-
-    public Set<String>getAllSessions()
-    {
-        return userSessions.keySet();
-    }
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
